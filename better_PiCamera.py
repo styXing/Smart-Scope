@@ -29,7 +29,7 @@ class ScopeOverlay:
         
         # Configure the camera
         config = self.picam2.create_video_configuration(
-            main={"size": (self.width, self.height), "format": "RGB888"},
+            main={"size": (self.width, self.height), "format": "BGR888"},
             controls={"FrameDurationLimits": (int(1/self.fps * 1000000), int(1/self.fps * 1000000))},
             transform=Transform(vflip=False, hflip=False)
         )
@@ -120,7 +120,7 @@ class ScopeOverlay:
             cv2.putText(output, 
                        f"{key}: {value}", 
                        (10, y_pos), 
-                       cv2.FONT_HERSHEY_SIMPLEX, 
+                       cv2.FONT_HERSHEY_COMPLEX, 
                        0.6, (255, 255, 255), 2)
             y_pos += 25
         
@@ -165,8 +165,8 @@ if __name__ == "__main__":
     
     # Update with mock sensor data (would come from real sensors)
     scope.update_sensor_data({
-        'Wind': '5.2 mph',
-        'Temp': '72°F',
+        'Wind': '420 mph',
+        'Temp': '69°F',
         'Range': '300m',
         'Angle': '2.5°'
     })
@@ -177,8 +177,8 @@ if __name__ == "__main__":
         while True:
             # Simulate crosshair adjustments based on external factors
             # In reality, this would use your ballistic calculations
-            wind_offset = int(np.sin(time.time()) * 10)
-            elevation_offset = int(np.cos(time.time() * 0.5) * 5)
+            wind_offset = int(np.sin(time.time()) * 50)
+            elevation_offset = int(np.cos(time.time() * 0.5) * 25)
             
             # Update the crosshair position
             scope.update_crosshair(x_offset=wind_offset, y_offset=elevation_offset)
