@@ -101,9 +101,6 @@ def calculateVertDropOrbeeze(distance):
     else:
         return (((-0.0368 * (distanceFeet ** 2)) + (2.2546 * distanceFeet) - 32.054) * 2.54)
 
-    #An algorithm based on the full series of data points rather than two halves.
-    # ((-0.0003 * (distance ** 3)) + (0.0109 * (distance ** 2)) + (0.0736 * distance) + 0.1339)
-
 def calculateVertTranslation(distance):
     """ HR: The methodology for this code and the code were given via a chatGPT prompt.
 
@@ -121,23 +118,18 @@ def calculateVertTranslation(distance):
     vertFOVinRad = 2 * math.atan(sensorHeight / (2 * focalLength))
     vertFOVinDeg = math.degrees(vertFOVinRad)
 
-    scopeZeroDistance = 11.8385265 #Different for each Caliber
+    scopeZeroDistance = 11.8385265 #Different for each Caliber (ChatGPT gave me the idea of fixing the zeroing distance)
     sceneHeightCM = ((2 * math.tan(math.radians(vertFOVinDeg / 2)) * scopeZeroDistance) * 100)    
-    print('Sceneheight '+ str(sceneHeightCM))
     try:
         vertDropCM = calculateVertDropOrbeeze(distance) #Change this method to change caliber
     except ZeroDivisionError:
         pass
-    print(vertDropCM)
     try:
         pixelsPerCentimeter = imageHeight / sceneHeightCM
     except UnboundLocalError:
         pass
-    print(pixelsPerCentimeter)
     pixelsOfVertDrop = vertDropCM * pixelsPerCentimeter
-    print(pixelsOfVertDrop)
     vertDropPixels = imageHeight / 2 - pixelsOfVertDrop
-    print(vertDropPixels)
     return vertDropPixels
 
 def main():
@@ -175,9 +167,7 @@ def main():
             img = cv2.drawMarker(img, (crosshairX, crosshairY), (0, 0, 0), cv2.MARKER_CROSS, 120, 2)
             try:
                 crosshairYTrans = int(calculateVertTranslation(targetDistanceMeters))
-                print(crosshairYTrans)
                 img = cv2.circle(img, (crosshairX, crosshairYTrans), 3, (0,0, 255), -1)
-                #img = cv2.circle(img, (crosshairX, crosshairY), 3, (0,0, 255), -1)
             except ZeroDivisionError:
                 pass
             cv2.imshow("Output", img)
@@ -202,6 +192,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-#def verticalDropDisplay(distance):
+:
