@@ -157,7 +157,7 @@ def main():
         crosshairX = 320
         crosshairY = 240
         picam = Picamera2()
-        picam.configure(picam.create_video_configuration(raw={"size":(1640,1232)},main={"format":'RGB888',"size":(640,480)}))
+        picam.configure(picam.create_preview_configuration(raw={"size":(1640,1232)},main={"format":'RGB888',"size":(640,480)}))
         picam.start()
 
         # targetDistanceFeet = float(input())
